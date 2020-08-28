@@ -32,4 +32,15 @@ public abstract class AbstractBean<T extends BaseEntity> {
 			return alterar(obj);
 		}
 	}
+	
+	public void excluir(Long id)throws Exception {
+		T old = entity.find(getClasse(), id);
+		entity.remove(old);
+		entity.flush();
+	}
+	
+	public T buscarPorId(Long id)throws Exception {
+		return entity.find(getClasse(), id);
+	}
+	
 }
