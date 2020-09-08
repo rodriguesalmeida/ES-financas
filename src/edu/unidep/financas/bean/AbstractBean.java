@@ -8,7 +8,7 @@ import edu.unidep.financas.model.BaseEntity;
 public abstract class AbstractBean<T extends BaseEntity> {
 
 	@PersistenceContext(unitName = "Financas")
-	private EntityManager entity;
+	protected EntityManager entity;
 	
 	public abstract Class<T> getClasse();
 	
