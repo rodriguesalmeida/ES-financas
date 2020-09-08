@@ -1,0 +1,15 @@
+edu/unidep/financas/model/Conta.class
+edu/unidep/financas/rest/ApplicationRest.class
+edu/unidep/financas/rest/AbstractRest.class
+edu/unidep/financas/bean/ContaBean.class
+edu/unidep/financas/bean/CategoriaBean.class
+edu/unidep/financas/bean/AbstractBean.class
+edu/unidep/financas/model/BaseEntity.class
+edu/unidep/financas/model/Categoria.class
+edu/unidep/financas/model/Pessoa.class
+edu/unidep/financas/rest/ContaRest.class
+edu/unidep/financas/bean/PessoaBean.class
+edu/unidep/financas/rest/FilterOrigin.class
+edu/unidep/financas/rest/CategoriaRest.class
+edu/unidep/financas/rest/PessoaRest.class
+edu/unidep/financas/model/BaseEntityImpl.class

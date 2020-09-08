@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 
 import edu.unidep.financas.bean.AbstractBean;
 import edu.unidep.financas.bean.CategoriaBean;
+import edu.unidep.financas.bean.ContaBean;
 import edu.unidep.financas.model.Categoria;
 
 @Path("categoria")

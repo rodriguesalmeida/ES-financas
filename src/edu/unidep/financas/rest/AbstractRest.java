@@ -43,7 +43,7 @@ public abstract class AbstractRest<T extends BaseEntity> {
 	}
 	
 	@Path("salvar")
-	@PUT
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response salvar(T obj) {
