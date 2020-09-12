@@ -1,0 +1,20 @@
+create table pessoa (
+	id serial primary key,
+	nome varchar(200),
+	celular varchar(20),
+	cpf varchar(20),
+	email varchar(200)
+);
+create table categoria (
+	id serial primary key,
+	nome varchar(200)
+);
+create table conta (
+	id serial primary key,
+	idpessoa bigint references pessoa,
+	valor decimal(10,2),
+        descricao varchar(200),
+	datavencimento date,
+	datapagamento date,
+	idcategoria bigint references categoria
+);

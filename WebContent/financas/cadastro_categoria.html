@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <title>Cadastro de Categoria</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf8">
+        <link rel="stylesheet" href="css/cadastro.css">
+        <script>
+            function salvar(){
+                var http = new XMLHttpRequest();
+                http.open('POST','http://localhost:8180/Financas/rest/categoria/salvar');
+                http.setRequestHeader('Content-Type','application/json');
+                var obj = {
+                    nome:nome.value
+                }
+                http.onreadystatechange = function(stat){
+                    if (http.readyState == 4){
+                        var categoria = JSON.parse(http.responseText);
+                        var tbl = document.getElementById('tbl-pesquisa');
+                        var achou = false;
+                        for (var w = 0; w < tbl.rows.length;w++){
+                            if (tbl.rows[w].cells[0].innerHTML == id+''){
+                                tbl.deleteRow(w);
+                                adicionarLinha(categoria);
+                                achou = true;
+                                break;
+                            }
+                        }
+                        if (achou == false){
+                            adicionarLinha(categoria);
+                        }
+                        alert('Salvo com Sucesso');
+                    }
+                }
+                http.send(JSON.stringify(obj));
+            }
+            function pesquisar(){
+            var http = new XMLHttpRequest();
+            http.open('GET','http://localhost:8180/Financas/rest/categoria');
+            http.setRequestHeader('Content-Type',"application/json");
+            http.onreadystatechange = function(){
+                if (http.readyState == 4){
+                    var lista = JSON.parse(http.responseText);
+                    for (var w = 0; w < lista.length; w++){
+                        adicionarLinha(lista[w]);
+                    }
+                }
+            }
+            http.send();
+        }
+        function adicionarLinha(categoria){
+            var tbl = document.getElementById('tbl-pesquisa');
+            var linha = tbl.insertRow(tbl.rows.length);
+            var colCodigo = linha.insertCell(0);
+            colCodigo.innerHTML = categoria.id;
+            var colNome = linha.insertCell(1);
+            colNome.innerHTML = categoria.nome;            
+            var colAcoes = linha.insertCell(2);
+            colAcoes.innerHTML = `<button onclick="alterar(`+categoria.id+`)">Alterar</button> 
+                <button onclick="excluir(`+categoria.id+`)">Excluir</button>`;
+        }
+        function alterar(id){
+            var http = new XMLHttpRequest();
+            http.open('GET','http://localhost:8180/Financas/rest/categoria/'+id);
+            http.setRequestHeader('Content-Type', 'application/json');
+            http.onreadystatechange = function(stat){
+                if (http.readyState == 4){
+                    var categoria = JSON.parse(http.responseText);
+                    codigo.value = categoria.id;
+                    nome.value = categoria.nome;
+                }
+            }
+            http.send();
+        }
+        function excluir(id){
+            var http = new XMLHttpRequest();
+            http.open('DELETE','http://localhost:8180/Financas/rest/categoria/'+id);
+            http.setRequestHeader('Content-Type', 'application/json');
+            http.onreadystatechange = function(stat){
+                if (http.readyState == 4){
+                    var tbl = document.getElementById('tbl-pesquisa');
+                    for (var w = 0; w < tbl.rows.length;w++){
+                        if (tbl.rows[w].cells[0].innerHTML == id+''){
+                            tbl.deleteRow(w);
+                            break;
+                        }
+                    }
+                }
+            }
+            http.send();
+        }
+        </script>
+    </head>
+    <body onload="pesquisar()">
+        <div class="container">
+            <div class="column">
+                <h2>Cadastro de Categoria</h2>
+                <div class="linha">
+                    <div class="label">Código</div>
+                    <input name="codigo" readonly id="codigo" type="number">
+                </div>
+                <div class="linha">
+                    <div class="label">
+                        Nome
+                    </div>
+                    <input type="text" name="nome" id="nome">
+                </div>
+                <div class="linha">
+                    <button onclick="salvar()">Salvar</button>
+                </div>
+            </div>
+            <div class="pesquisa">
+                <div>
+                    <h3>Lista de Categorias cadastradas</h3>
+                </div>
+                <div class="tabela" >
+                    <table id="tbl-pesquisa" border="1">
+                        <thead>
+                            <td>Código</td>
+                            <td>Nome</td>
+                            <td>Ações</td>
+                        </thead>                    
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

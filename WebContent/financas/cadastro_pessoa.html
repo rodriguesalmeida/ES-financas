@@ -8,9 +8,10 @@
         function salvar(){
             var http = new XMLHttpRequest();
             
-            http.open('POST','http://localhost:8280/Financas/rest/pessoa/salvar');
+            http.open('POST','http://localhost:8180/Financas/rest/pessoa/salvar');
             http.setRequestHeader('Content-Type',"application/json")
             var obj = {
+                id:codigo.value,
                 nome:nome.value,
                 cpf:cpf.value,
                 email:email.value,
@@ -18,16 +19,100 @@
             }
             http.onreadystatechange = function(stat){
                 console.log(stat);
-                console.log(http.responseText);
+                if (http.readyState == 4){
+                    var pessoa = JSON.parse(http.responseText);
+                    var tbl = document.getElementById('tbl-pesquisa');
+                    var achou = false;
+                    for (var w = 0; w < tbl.rows.length;w++){
+                        if (tbl.rows[w].cells[0].innerHTML == id+''){
+                            tbl.deleteRow(w);
+                            adicionarLinha(pessoa);
+                            achou = true;
+                            break;
+                        }
+                    }
+                    if (achou == false){
+                        adicionarLinha(pessoa);
+                    }
+                    alert('Salvo com Sucesso');
+                }
             }
             http.send(JSON.stringify(obj));
         }
+        function pesquisar(){
+            var http = new XMLHttpRequest();
+            http.open('GET','http://localhost:8180/Financas/rest/pessoa');
+            http.setRequestHeader('Content-Type',"application/json");
+            http.onreadystatechange = function(){
+                if (http.readyState == 4){
+                    var lista = JSON.parse(http.responseText);
+                    for (var w = 0; w < lista.length; w++){
+                        adicionarLinha(lista[w]);
+                    }
+                }
+            }
+            http.send();
+        }
+        function adicionarLinha(pessoa){
+            var tbl = document.getElementById('tbl-pesquisa');
+            var linha = tbl.insertRow(tbl.rows.length);
+            var colCodigo = linha.insertCell(0);
+            colCodigo.innerHTML = pessoa.id;
+            var colNome = linha.insertCell(1);
+            colNome.innerHTML = pessoa.nome;
+            var colCpf = linha.insertCell(2);
+            colCpf.innerHTML = pessoa.cpf;            
+            var colEmail = linha.insertCell(3);
+            colEmail.innerHTML = pessoa.email;
+            var colCelular = linha.insertCell(4);
+            colCelular.innerHTML = pessoa.celular;
+            var colAcoes = linha.insertCell(5);
+            colAcoes.innerHTML = `<button onclick="alterar(`+pessoa.id+`)">Alterar</button> 
+                <button onclick="excluir(`+pessoa.id+`)">Excluir</button>`;
+        }
+        function alterar(id){
+            var http = new XMLHttpRequest();
+            http.open('GET','http://localhost:8180/Financas/rest/pessoa/'+id);
+            http.setRequestHeader('Content-Type', 'application/json');
+            http.onreadystatechange = function(stat){
+                if (http.readyState == 4){
+                    var pessoa = JSON.parse(http.responseText);
+                    codigo.value = pessoa.id;
+                    nome.value = pessoa.nome;
+                    cpf.value = pessoa.cpf;
+                    email.value = pessoa.email;
+                    celular.value = pessoa.celular;
+                }
+            }
+            http.send();
+        }
+        function excluir(id){
+            var http = new XMLHttpRequest();
+            http.open('DELETE','http://localhost:8180/Financas/rest/pessoa/'+id);
+            http.setRequestHeader('Content-Type', 'application/json');
+            http.onreadystatechange = function(stat){
+                if (http.readyState == 4){
+                    var tbl = document.getElementById('tbl-pesquisa');
+                    for (var w = 0; w < tbl.rows.length;w++){
+                        if (tbl.rows[w].cells[0].innerHTML == id+''){
+                            tbl.deleteRow(w);
+                            break;
+                        }
+                    }
+                }
+            }
+            http.send();
+        }
     </script>
 </head>    
-<body>
+<body onload="pesquisar()">
     <div class="container">
         <div class="column">
             <h2>Cadastro de Pessoa</h2>
+            <div class="linha">
+                <div class="label">Código</div>
+                <input name="codigo" readonly id="codigo" type="number">
+            </div>
             <div class="linha">
                 <div class="label">Nome</div>
                 <input name="nome" id="nome" type="text">
@@ -46,6 +131,23 @@
             </div>
             <div class="linha">
                 <button onclick="salvar()">Salvar</button>
+            </div>
+        </div>
+        <div class="pesquisa">
+            <div>
+                <h3>Lista de Pessoas cadastradas</h3>
+            </div>
+            <div class="tabela" >
+                <table id="tbl-pesquisa" border="1">
+                    <thead>
+                        <td>Código</td>
+                        <td>Nome</td>
+                        <td>CPF</td>
+                        <td>E-mail</td>
+                        <td>Celular</td>
+                        <td>Ações</td>
+                    </thead>                    
+                </table>
             </div>
         </div>
     </div>

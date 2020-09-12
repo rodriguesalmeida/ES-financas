@@ -7,8 +7,8 @@ edu/unidep/financas/bean/AbstractBean.class
 edu/unidep/financas/model/BaseEntity.class
 edu/unidep/financas/model/Categoria.class
 edu/unidep/financas/model/Pessoa.class
-edu/unidep/financas/rest/ContaRest.class
 edu/unidep/financas/bean/PessoaBean.class
+edu/unidep/financas/rest/ContaRest.class
 edu/unidep/financas/rest/FilterOrigin.class
 edu/unidep/financas/rest/CategoriaRest.class
 edu/unidep/financas/rest/PessoaRest.class
