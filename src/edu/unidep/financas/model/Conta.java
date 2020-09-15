@@ -18,11 +18,29 @@ public class Conta extends BaseEntityImpl {
 	@Temporal(TemporalType.DATE)
 	private Date dataPagamento;
 	@ManyToOne()
-	@JoinColumn(name = "idpessoa", referencedColumnName = "id")
+	@JoinColumn(name = "idpessoa", referencedColumnName = "id", insertable = false, updatable = false)
 	private Pessoa pessoa;
+	private Long idPessoa;
 	@ManyToOne
-	@JoinColumn(name="idcategoria", referencedColumnName = "id")
+	@JoinColumn(name="idcategoria", referencedColumnName = "id", insertable = false, updatable = false)
 	private Categoria categoria;
+	private Long idCategoria;
+	
+	public Long getIdCategoria() {
+		return idCategoria;
+	}
+	
+	public void setIdCategoria(Long idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+	
+	public Long getIdPessoa() {
+		return idPessoa;
+	}
+	
+	public void setIdPessoa(Long idPessoa) {
+		this.idPessoa = idPessoa;
+	}
 	
 	public String getDescricao() {
 		return descricao;

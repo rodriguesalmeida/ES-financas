@@ -12,12 +12,12 @@
             http.setRequestHeader('Content-Type',"application/json")
             var obj = {
                 id:codigo.value,
-                pessoa:pessoa.value,
+                idPessoa:pessoa.value,
                 descricao:descricao.value,
                 dataVencimento:dataVencimento.value,
                 dataPagamento:dataPagamento.value,
                 valor:valor.value,
-                categoria:categoria.value
+                idCategoria:categoria.value
             }
             http.onreadystatechange = function(stat){
                 console.log(stat);
@@ -26,7 +26,7 @@
                     var tbl = document.getElementById('tbl-pesquisa');
                     var achou = false;
                     for (var w = 0; w < tbl.rows.length;w++){
-                        if (tbl.rows[w].cells[0].innerHTML == id+''){
+                        if (tbl.rows[w].cells[0].innerHTML == conta.id+''){
                             tbl.deleteRow(w);
                             adicionarLinha(conta);
                             achou = true;
@@ -74,8 +74,8 @@
             colCategoria.innerHTML = conta.categoria.nome;
 
             var colAcoes = linha.insertCell(7);
-            colAcoes.innerHTML = `<button onclick="alterar(`+pessoa.id+`)">Alterar</button> 
-                <button onclick="excluir(`+pessoa.id+`)">Excluir</button>`;
+            colAcoes.innerHTML = `<button onclick="alterar(`+conta.id+`)">Alterar</button> 
+                <button onclick="excluir(`+conta.id+`)">Excluir</button>`;
         }
         function alterar(id){
             var http = new XMLHttpRequest();
@@ -86,11 +86,11 @@
                     var conta = JSON.parse(http.responseText);
                     codigo.value = conta.id;
                     descricao.value = conta.descricao;
-                    pessoa.value = conta.pessoa;
+                    pessoa.value = conta.idPessoa;
                     dataVencimento.value = conta.dataVencimento;
                     dataPagamento.value = conta.dataPagamento;
                     valor.value = conta.valor;
-                    categoria.value = conta.categoria;
+                    categoria.value = conta.idCategoria;
                 }
             }
             http.send();
@@ -124,7 +124,7 @@
                         var option = document.createElement("option");
                         option.text = lista[w].nome;
                         option.codigo = lista[w].id;
-                        option.value = lista[w];
+                        option.value = lista[w].id;
                         selectPessoa.add(option);
                     }
                 }
@@ -143,7 +143,7 @@
                     for (var w = 0; w < lista.length; w++){
                         var option = document.createElement("option");
                         option.text = lista[w].nome;
-                        option.value = lista[w];
+                        option.value = lista[w].id;
                         option.codigo = lista[w].id;
                         selectPessoa.add(option);
                     }
